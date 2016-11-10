@@ -1,7 +1,7 @@
 /*global Phaser*/
 
 
-var game = new Phaser.Game(1900, 600, Phaser.AUTO, '');
+var game = new Phaser.Game(1400, 600, Phaser.AUTO, '');
 var game_state = {}
 
 var mouseX;
@@ -20,47 +20,53 @@ game_state.main.prototype = {
         game.load.image('ground' , 'assets/platform.png');
         game.load.image('star' , 'assets/star.png');
         game.load.spritesheet('dude' , 'assets/dude.png', 32, 48);
-        game.load.image('haunt' , 'assets/download.png');
+        game.load.spritesheet('platskulls' , 'assets/platform.png', 128, 128);
+        game.load.image('pentagram1' , 'assets/Pentagram.png')
     },
 
 
     create: function() {
-        game.add.sprite(0, 0, 'star');
-        game.add.sprite(0, 0, 'haunt');
+        //game.add.sprite(0, 0, 'star');
+        game.add.sprite(200, -150, 'pentagram1');
         this.platforms = game.add.group();
         this.platforms.enableBody = true;
         
-        var ground = this.platforms.create(0, game.world.height - 64, 'ground');
-        ground.scale.setTo(10, 2);
-        ground.body.immovable = true
-        var ledge = this.platforms.create(37, 193, 'ground');
-        ledge.width = 100;
+        var platskulls1 = this.platforms.create(0, game.world.height - 64, 'platskulls'); 
+        platskulls1.scale.setTo(10, 2);
+        platskulls1.body.immovable = true
+        this.ledge = this.platforms.create(37, 193, 'platskulls');
+        // ledge.width = 100;
+        this.ledge.body.immovable = true;
+        this.led
+        
+        
+        var ledge = this.platforms.create(50, 400, 'platskulls');
+        ledge.body.immovable = true;    
+        ledge = this.platforms.create(500, 140, 'platskulls');
         ledge.body.immovable = true;
-        ledge = this.platforms.create(50, 400, 'ground');
+        ledge = this.platforms.create(444, 777, 'platskulls');
         ledge.body.immovable = true;
-        ledge = this.platforms.create(500, 140, 'ground');
+        ledge = this.platforms.create(310, 238, 'platskulls');
         ledge.body.immovable = true;
-        ledge = this.platforms.create(444, 777, 'ground');
-        ledge.body.immovable = true;
-        ledge = this.platforms.create(310, 238, 'ground');
-        ledge.body.immovable = true;
-        ledge = this.platforms.create(255, 129, 'ground');
-        ledge.body.immovable = true;
-        ledge.width = 100;
-        ledge = this.platforms.create(626, 484, 'ground');
-        ledge.body.immovable = true;
-        ledge.width = 100;
-        ledge = this.platforms.create(979, 207, 'ground');
-        ledge.body.immovable = true;
-        ledge = this.platforms.create(776, 340, 'ground');
+        ledge = this.platforms.create(255, 129, 'platskulls');
         ledge.body.immovable = true;
         ledge.width = 100;
-        ledge = this.platforms.create(1104, 340, 'ground');
+        ledge = this.platforms.create(626, 484, 'platskulls');
         ledge.body.immovable = true;
         ledge.width = 100;
-        ledge = this.platforms.create(965, 457, 'ground');
+        ledge = this.platforms.create(979, 207, 'platskulls');
+        ledge.body.immovable = true;
+        ledge = this.platforms.create(776, 340, 'platskulls');
         ledge.body.immovable = true;
         ledge.width = 100;
+        ledge = this.platforms.create(1104, 340, 'platskulls');
+        ledge.body.immovable = true;
+        ledge.width = 100;
+        ledge = this.platforms.create(965, 457, 'platskulls');
+        ledge.body.immovable = true;
+        ledge.width = 100;
+        
+        
        
        
        
@@ -77,14 +83,17 @@ game_state.main.prototype = {
         
         this.stars = game.add.group();
         this.stars.enableBody = true;
-        for (var i = 0; i < 12; i++) {
-            var star = this.stars.create(i * 70, 0, "star");
-            star.body.gravity.y = 300;
-            star.body.bounce.y = 0.7 + Math.random() * 0.2;
-        }
+
+            var star = this.stars.create( 84, 172, "star");
+            var star2 = this.stars.create( 303, 108, "star");
+            var star3 = this.stars.create( 677, 463, "star");
+            var star4 = this.stars.create( 1022, 437, "star");
+            var star5 = this.stars.create( 822, 317, "star");
+            var star6 = this.stars.create( 1154, 320, "star");
+            
              this.scoreText = game.add.text(16, 16, 'score: 0', {
              fontSize: '32px',
-             fill: '#000'
+             fill: '#ffffff'
          });
          
          this.score = 0;
@@ -96,6 +105,7 @@ game_state.main.prototype = {
 
 
     update: function() {
+        game.debug.body(this.ledge);
         game.physics.arcade.collide(this.player, this.platforms)
         this.player.body.velocity.x = 0;
         if (this.cursors.left.isDown) { 
